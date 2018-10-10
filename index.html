@@ -1,0 +1,373 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" >  
+	<!--<link rel="stylesheet" type="text/css" media="screen" href="https://cdn.conversejs.org/css/converse.min.css">
+		<script src="https://cdn.conversejs.org/dist/converse.min.js"></script>-->
+		
+	<title>SwordVoice WEB Dialer</title><!--titulo de la pestana-->
+
+	<link rel="icon" sizes="192x192" href="res/imagenes/dialpad_sw.png"><!--favico-->
+
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="ccs/estilos.css" />
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  	<script src="//cdn.jsdelivr.net/alertifyjs/1.10.0/alertify.min.js"></script>
+    <script src="js/lib/sip-0.7.7.min.js"></script>
+    <script src="js/lib/notify.js"></script>
+    <script src="js/lib/is.js"></script>
+    
+    <audio id="audio1" preload="auto">
+		<source src="res/audios/1.wav" type="audio/wav" >
+    </audio>
+    
+    
+    
+    <audio id="audio2" preload="auto">
+    	<source src="res/audios/2.wav" type="audio/wav" >  	
+    </audio>
+    	
+</head>
+
+<body>
+
+	<!-- SIDEBAR Log In-->
+
+	<div class="w3-sidebar w3-bar-block w3-animate-left w3-card-2" style="display:none" id="mySidebar">
+	<button onclick="w3_close()" class="w3-bar-item w3-large">Close &times;</button>
+					    <div class=" w3-hover-shadow w3-container"  id="registerForm"> 
+                            <div class=" w3-red" id="tituloTarjeta">
+							
+                              <h2>Inicio de Sesión</h2>
+                            </div>                   
+                            
+								<div class="w3-container" >
+									<input class="w3-input " type="text" id="usuario" placeholder="Usuario SIP"></input><br>
+									<input class="w3-input" type="password" id="contraseña" placeholder="Contraseña SIP"></input>
+								</div>
+							<br>								
+							<div class="w3-container" id="botonesRegistro">
+									<button id="registro" class="w3-btn   w3-round w3-red">Iniciar </button>
+									
+                            </div>
+                            <br>
+							
+              
+			   </div>
+                </div>
+    
+	<!-- SIDEBAR Log In-->
+    
+   <div class="wrapper" id="principal" >
+    
+		<header class="w3-red encabezado">
+		  <table id="headerTable">
+			<tr>
+			<td id="titulo">
+
+				<h1>SwordVoice Dialer</h1>
+			</td>
+			<td >
+				
+				
+				<div id="contenedorMenu">
+				  <button  id="botonMenu" ><i class="material-icons"    >more_vert</i></button>
+				  <div id="menu" >
+					<button id="noRegistro" class="w3-btn   w3-round w3-red">Cerrar Sesión</button>
+				  </div>
+				</div>
+		
+		
+			</td> 
+			</tr>  
+		 </table>
+		</header>
+
+
+		<section class="contenido" style="margin: auto">
+			<div class="post  ">
+			
+				
+				<div  id="zonaCentral">
+				
+				
+					<div id="contenedorLogin" class="slide" ><button id="botonLogin" class="w3-red  " onclick="w3_open()" ><i title="Inicio de Sesión" id="login" class="material-icons">person<br></i></button>
+
+
+					<span style="
+					font-size: x-large;
+					position: absolute;
+					left: 24%;
+					top: 70%;
+				">Iniciar Sesión</span>
+
+				</div>
+				
+				
+					<div class="slide" id="contactos" >
+					
+							<!-- directorio -->
+								<div class="w3-card-2" >
+									<div class="w3-red	titulos">
+									<h2> Directorio</h2>
+										<select class="w3-select" id="destinoLLamada" >
+												<option value="vacio"></option>
+												<option value="jainer">205</option>
+												<option value="joel">203</option>
+												<option value="did">15208914487</option>
+										</select>
+									</div>
+								</div>
+									
+
+							<!-- directorio fin -->
+					
+					
+					
+					</div>
+					<div class="slide" id="voicemail" >Buzón de Voz</div>
+					<div class="slide" id="config" >
+					
+						 <div class=" w3-hover-shadow " style=" height: 100%; border-radius: 8px;" > 
+                            <div class=" w3-red titulos" >
+							
+                              <h2>Configuración</h2>
+                            </div>                   
+                            
+								<div class="w3-container" id="textosRegistro">
+									<input class="w3-input " type="text" id="sipExpire"> Register Expires (Default 60s)</input>
+								</div>
+								
+								<!--<div>
+									<button id="noRegistro" class="w3-btn   w3-round w3-red">Cerrar Sesión</button>
+								</div>-->
+							
+							
+              
+			   			</div>
+               		 </div>	
+               		 
+               		 					
+               		 															
+					<div class="slide" id="chat" > 
+					
+						
+							<div    style="border-radius: 5px 5px 0 0;width: 318px;text-align: center" class="w3-red titulos"><h2 style="margin-top: 0px;">Mensajes</h2></div>
+								
+						<div id="chatLobby">
+						
+							<button  id="newChat" title="Nuevo Chat"><i class="material-icons" style="font-size:24px;color: black;">textsms</i>
+						</button>
+							
+							<div id="contenedorHistorial">
+								
+								<table id="historialMensajes" style="display: none;">
+									
+									
+								</table>
+								
+								<h5 id="noIM" style="text-align: center">No hay mensajes en el historial</h5>
+								
+							</div>
+							
+							
+						</div>
+							
+							<div id="chatControl" >
+							
+							
+										
+									<button  id="back" title="Atrás"><i class="material-icons" style="font-size:24px;color: black;">chevron_left</i> Atrás</button>
+
+								
+										<span>Destinatario:</span>
+										<input id="destinoChat"  type="text"  placeholder="Ingresa Número"></input>
+									<div id="chatArea" >
+										
+
+
+
+
+
+										<div id="chat000" class="conversaciones" ></div>
+									</div>
+								
+								
+								
+								
+<!--								<textarea id="chatMessage" placeholder="Escribe tu mensaje"></textarea>	
+-->								
+															
+															
+							<textarea id="chatMessage" placeholder="Escribe tu mensaje"></textarea>	
+
+							<button id="send"><i class="material-icons" style="font-size:24px;color:black">send</i></button>
+
+							</div>
+					</div>	
+					
+									
+													
+																					
+					<div class=" slide" id="teclas">
+						
+						
+						<div class="w3-card-2" id="display" >							
+							<div>
+								<p style="margin:0;padding:8px;display:block;border:none;width:100%;color:gray">User: <span  id="userReg">XXX</span> Status: <span   id="statusReg" style="color:red"><b>No Registrado</b></span></p>
+							</div>
+							<input class="w3-input " style="border:none" type="text" id="escritoLLamada" placeholder="Número de Destino" >
+							</input>
+						</div>
+						
+						<div><img id="ringing" preload="auto" src="res/imagenes/phone-ringing.gif"></div>
+
+						<table class="tabla-dialpad"> 
+
+									<tr>
+									  <td><button id="num7"  class="num js-dtmf-interface  "><b>7</b><br><span style="font-size:10px;">PQRS</span></button></td>
+									  <td><button id="num8" class="num js-dtmf-interface  "><b>8</b><br><span style="font-size:10px;">TUV</span></button></td>
+									  <td><button id="num9" class="num js-dtmf-interface "><b>9</b><br><span style="font-size:10px;">WXYZ</span></button></td>
+									  </tr>
+									<tr>
+									  <td><button  id="num4" class="num js-dtmf-interface"><b>4</b><br><span style="font-size:10px;">GHI</span></button></td>
+									  <td><button id="num5" class="num js-dtmf-interface"><b>5</b><br><span style="font-size:10px;">JKL </span></button></td>
+									  <td><button id="num6" class="num js-dtmf-interface"><b>6</b><br><span style="font-size:10px;">MNO</span></button></td>
+									  </tr>
+									<tr>
+									  <td><button id="num1" class="num js-dtmf-interface"><b>1</b><br></button></td>
+									  <td><button id="num2" class="num js-dtmf-interface"><b>2</b><br><span style="font-size:10px;">ABC </span></button></td>
+									  <td><button id="num3" class="num js-dtmf-interface"><b>3</b><br><span style="font-size:10px;">DEF</span></button></td>
+									  </tr>
+									 <tr>
+									  <td><button id="numeral" class="num js-dtmf-interface"><b>#</b><br></button></td>
+									  <td><button id="num0" class="num js-dtmf-interface"><b>0</b><br></button></td>
+									  <td><button id="asterisco" class="num js-dtmf-interface"><b>*</b><br></button></td>
+									  </tr>		
+									  <tr>
+									  <td><button class="num3 w3-green  " id="botonCallPBX"><i class="material-icons" style="font-size:36px;color:white">call</i></button></td>
+									  <td><button id="clear" class="num3 js-dtmf-interface" ><b>CLR</b></button></td>
+									   <td><button class="num3 w3-red " id="botonRechazar"><i class="material-icons" style="font-size:36px;color:white">call_end</i></button></td>
+									  </tr>
+
+							</table>
+					</div>
+				</div>
+
+			</div> 
+			 
+
+
+			<div class="directorio ">
+
+				<div id="menuContainer" class="w3-card-2 w3-red">
+				
+							<i class="material-icons " title="Mensaje sin leer" id="nuevoMensaje" 
+							style="color: rgba(0, 0, 0, 0.8);
+								position: absolute;
+								margin-left: 38px;
+								font-size:20px;display:none;
+							">error</i>		
+								
+					<table style="margin:auto">
+						<tr>	
+							<td>				
+								<button id="im" class="botonMenu w3-button w3-hover-red  w3-red w3-xlarge" title="Chat"><i class="material-icons" >chat</i></button>	
+								<button id="buzon" class="botonMenu w3-button w3-hover-red w3-red w3-xlarge" title="Buzón de Mensajes" ><i class="material-icons" >mail_outline</i></button>	    
+								<button id="dial" class="botonMenu w3-button w3-red w3-hover-red w3-xlarge" title="Teclado Numerico"><i class="material-icons" >dialpad</i></button>
+								<button id="contact" class="botonMenu w3-button w3-hover-red w3-red w3-xlarge" title="Contactos" ><i class="fa fa-address-book" ></i></button>	    
+								<button id="setting" class="botonMenu w3-button w3-hover-red w3-red w3-xlarge" title="Configuración" ><i class="material-icons" >settings</i></button>
+							</td>
+						</tr>
+					</table>
+				</div>	
+
+			</div>   
+			
+			
+    		
+     		
+		</section>
+		<!--<aside class="contenido-lateral"></aside>-->
+	
+  </div>
+<!--   style="display: block"
+-->    
+  	<div id="contenedorVideos"   >
+   		
+   		
+   		
+   		<!--src="res/videos/h.mp4"-->
+   		<!--src="res/videos/v.MOV"-->
+   		<video   id="mediaRemoto"      ></video>
+    	<video   id="mediaLocal"      muted  ></video>	   			
+   		
+   		<div id="containerBotonesCtl" >
+							<button class="num2 w3-red "  id="botonColgarPBX"><i class="material-icons" style="font-size:36px;color:white">call_end</i></button>
+							<button class="num2 w3-white "  id="botonMute"><i id="toogleMute" class="material-icons " style="font-size:36px;color:black">mic</i></button>
+							<button class="num2 w3-white "  id="botonVideoOff"><i id="toogleVideo" class="material-icons " style="font-size:36px;color:black">videocam</i></button>							
+							<button class="num2 w3-white "  id="botonPad"><i  class="material-icons " style="font-size:36px;color:black">dialpad</i></button>							
+
+		</div>
+    			
+    		<!-- dtmf pad-->
+					<div id="dtmfPad" >
+											
+						
+							<table class="w3-table   w3-card-4  ">
+								
+									<tr>
+									  <td><button id="7"  class="num  "><b>7</b><br><span style="font-size:10px;">PQRS</span></button></td>
+									  <td><button id="8" class="num   "><b>8</b><br><span style="font-size:10px;">TUV</span></button></td>
+									  <td><button id="9" class="num  "><b>9</b><br><span style="font-size:10px;">WXYZ</span></button></td>
+									  </tr>
+									<tr>
+									  <td><button  id="4" class="num "><b>4</b><br><span style="font-size:10px;">GHI</span></button></td>
+									  <td><button id="5" class="num "><b>5</b><br><span style="font-size:10px;">JKL </span></button></td>
+									  <td><button id="6" class="num "><b>6</b><br><span style="font-size:10px;">MNO</span></button></td>
+									  </tr>
+									<tr>
+									  <td><button id="1" class="num "><b>1</b><br></button></td>
+									  <td><button id="2" class="num "><b>2</b><br><span style="font-size:10px;">ABC </span></button></td>
+									  <td><button id="3" class="num "><b>3</b><br><span style="font-size:10px;">DEF</span></button></td>
+									  </tr>
+									 <tr>
+									  <td><button id="num" class="num "><b>#</b><br></button></td>
+									  <td><button id="0" class="num "><b>0</b><br></button></td>
+									  <td><button id="ast" class="num "><b>*</b><br></button></td>
+									  </tr>
+								
+						</table>
+						
+						<!--<div class="w3-third" style="pink;height:90%;">
+						
+						</div>-->
+					
+					
+					</div>
+		<!-- dtmf pad fin-->
+   
+   				
+    </div>
+    
+    <div class="push" style ></div>
+		
+    <div class="pie w3-red" style=" padding: 0"><footer>SwordVoice LTD</footer></div>
+	
+
+	<script src="js/modules/dtmf.js"></script>
+	<script src="js/modules/ringback.js"></script>
+		<script src="js/main_min.js"></script>
+		
+		
+</body>
+</html>
